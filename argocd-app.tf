@@ -9,7 +9,25 @@ resource "kubernetes_manifest" "argocd_app_2048" {
     spec = {
         project = "default"
         source = {
-            repoURL = "https://github.com/OmerKH/GitOps"
+            repoURL = "https://github.com/OmerKH/Helming2048"
+            targetRevision = "main"
+            path = "gamechart"
+            helm = {
+                values = []
+            }
+        }
+        destination = {
+            server = "https://kubernetes.default.svc"
+            namespace = "default"
+        }
+        syncPolicy = {
+            automated = {
+                prune = true
+                selfHeal = true
+            }
+            syncOptions = [
+                "CreateNamespace=true"
+            ]
         }
     }
   }
