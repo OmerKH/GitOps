@@ -1,24 +1,27 @@
 resource "kubernetes_manifest" "argocd_app_2048" {
+  depends_on = [helm_release.argocd, kubernetes_namespace.myapp]
+  
   manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
-      name = "Helming2048"
+      name = "helming2048"
       namespace = "argocd"
     }
     spec = {
         project = "default"
         source = {
             repoURL = "https://github.com/OmerKH/Helming2048"
-            targetRevision = "main"
+            targetRevision = "HEAD"
             path = "gamechart"
             helm = {
-                values = []
+                # Let ArgoCD use the values.yaml file from the repository
+                # values = ""
             }
         }
         destination = {
             server = "https://kubernetes.default.svc"
-            namespace = "default"
+            namespace = "myapp"
         }
         syncPolicy = {
             automated = {

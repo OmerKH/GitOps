@@ -1,3 +1,9 @@
+resource "kubernetes_namespace" "argocd" {
+  metadata {
+    name = "argocd"
+  }
+}
+
 resource "helm_release" "argocd" {
     name       = "argocd"
     namespace  = "argocd"
@@ -5,7 +11,7 @@ resource "helm_release" "argocd" {
     chart      = "argo-cd"
     version    = "4.10.8"
 
-    create_namespace = true
+    create_namespace = false  # Let Terraform manage the namespace
 
     values = [
         yamlencode({
@@ -18,7 +24,11 @@ resource "helm_release" "argocd" {
         })
         ]
 
-    # values = [
-    #     file("${path.module}/../gamechart/values.yaml")
-    # ]
+    depends_on = [kubernetes_namespace.argocd]
+}
+
+resource "kubernetes_namespace" "myapp" {
+  metadata {
+    name = "myapp"
+  }
 }
