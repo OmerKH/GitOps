@@ -4,17 +4,18 @@ module "k8s" {
 }
 
 module "argocd" {
-  source             = "./modules/argocd"
-  nodeport           = 30080
-  helm_chart_version = "5.46.8"
+  source        = "./modules/argocd"
+  namespace     = "argocd"
+  chart_version = "4.10.8"
+  node_port     = 30080
 }
 
 module "argocd_app" {
-  source         = "./modules/apps"
-  app_name       = "devops2048"
-  namespace      = "argocd"
-  repo_url       = "https://github.com/OmerKH/Helming2048"
-  path           = "gamechart"
-  revision       = "HEAD"
-  app_namespace  = "default"
+  source            = "./modules/app"
+  app_name          = "helming2048"
+  argocd_namespace  = "argocd"
+  app_namespace     = "myapp"
+  repo_url          = "https://github.com/OmerKH/Helming2048"
+  revision          = "HEAD"
+  chart_path        = "gamechart"
 }

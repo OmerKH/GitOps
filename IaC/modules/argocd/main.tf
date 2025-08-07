@@ -1,3 +1,10 @@
+resource "kubernetes_namespace" "argocd" {
+  metadata {
+    name = var.namespace
+  }
+}
+
+
 resource "helm_release" "argocd" {
     name       = "argocd"
     namespace  = "argocd"
@@ -13,9 +20,10 @@ resource "helm_release" "argocd" {
             server: {
                 service: {
                     type: "NodePort"
-                    node_port: var.nodeport #30080
+                    node_port: var.node_port #30080
                 }
             }
         })
         ]
+        depends_on = [kubernetes_namespace.argocd]
 }
