@@ -11,7 +11,7 @@ resource "helm_release" "argocd" {
     chart      = "argo-cd"
     version    = "4.10.8"
 
-    create_namespace = false  # Let Terraform manage the namespace
+    create_namespace = false  
 
     values = [
         yamlencode({
