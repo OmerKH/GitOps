@@ -1,34 +1,20 @@
-resource "kubernetes_namespace" "argocd" {
-  metadata {
-    name = "argocd"
-  }
+module "k8s" {
+  source     = "./modules/k8s"
+  kubeconfig = var.kubeconfig
 }
 
-resource "helm_release" "argocd" {
-    name       = "argocd"
-    namespace  = "argocd"
-    repository = "https://argoproj.github.io/argo-helm"
-    chart      = "argo-cd"
-    version    = "4.10.8"
-
-    create_namespace = false  
-
-    values = [
-        yamlencode({
-            server: {
-                service: {
-                    type: "NodePort"
-                    node_port: 30080
-                }
-            }
-        })
-        ]
-
-    depends_on = [kubernetes_namespace.argocd]
+module "argocd" {
+  source             = "./modules/argocd"
+  nodeport           = 30080
+  helm_chart_version = "5.46.8"
 }
 
-resource "kubernetes_namespace" "myapp" {
-  metadata {
-    name = "myapp"
-  }
+module "argocd_app" {
+  source         = "./modules/apps"
+  app_name       = "devops2048"
+  namespace      = "argocd"
+  repo_url       = "https://github.com/OmerKH/Helming2048"
+  path           = "gamechart"
+  revision       = "HEAD"
+  app_namespace  = "default"
 }

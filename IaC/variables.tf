@@ -3,3 +3,8 @@ variable "kubeconfig" {
   default     = "~/.kube/config"
   description = "Path to kubeconfig file"
 }
+
+
+variable "environment" {
+  default = "dev"
+}
