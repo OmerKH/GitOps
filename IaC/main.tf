@@ -1,7 +1,7 @@
-module "k8s" {
-  source     = "./modules/k8s"
-  kubeconfig = var.kubeconfig
-}
+# module "k8s" {
+#   source     = "./modules/k8s"
+#   kubeconfig = var.kubeconfig
+# }
 
 module "argocd" {
   source        = "./modules/argocd"
@@ -11,7 +11,7 @@ module "argocd" {
 }
 
 module "argocd_app" {
-  source            = "./modules/app"
+  source            = "./modules/apps"
   app_name          = "helming2048"
   argocd_namespace  = "argocd"
   app_namespace     = "myapp"
