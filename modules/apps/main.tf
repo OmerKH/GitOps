@@ -4,7 +4,7 @@ resource "kubernetes_namespace" "myapp" {
   }
 }
 
-resource "kubernetes_manifest" "argocd_app" {
+resource "kubernetes_manifest" "app_2048" {
     depends_on = [kubernetes_namespace.myapp]
 
   manifest = {

@@ -10,7 +10,7 @@ module "argocd" {
   node_port     = 30080
 }
 
-module "argocd_app" {
+module "app_2048" {
   source            = "./modules/apps"
   app_name          = "helming2048"
   argocd_namespace  = "argocd"
